@@ -1,0 +1,113 @@
+ 
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <!-- <title>Печать — {{ product.name }}</title> -->
+ 
+  <style>
+    @page {
+      /* Slash (/) o'rniga bo'sh joy ishlating */
+      size: 58mm 40mm; 
+      margin: 0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      /* Elementni geometrik markazga tortadi */
+      display: flex;
+      align-items: center; 
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center; /* Tepadan joyni yo'qotish uchun markazlash */
+      justify-content: center;
+      padding-top: 0; /* Mana bu yerdagi paddingni 0 qiling */
+      box-sizing: border-box;
+    }
+
+    .sticker {
+      
+      width: 54mm;      /* 58mm qog'oz uchun maksimal kenglik */
+      height: 36mm;     /* 40mm qog'oz uchun maksimal balandlik */
+      border: 0px solid #000; 
+      box-sizing: border-box; /* Ichki padding o'lchamga ta'sir qilmasligi uchun */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around; /* Elementlarni ramka ichiga yoyib chiqadi */
+      padding: 0mm;
+      border-radius: 5px;
+    }
+    .brand { font-weight: 700; font-size: 16px; margin: 0; text-align: center; }
+    
+    .name {
+      font-weight: 800;
+      text-align: center;
+      font-size: 20px; /* Kattaroq qildik */
+      margin: 0;
+      word-break: break-word;
+      line-height: 1.1;
+      color: #000 !important;
+    }
+
+    .line {
+      text-align: center;
+       font-size: 14px;
+       margin: 0; 
+       font-weight: 700; /* Tiniq chiqishi uchun qalin qildik */
+       color: #000 !important;
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      /* Printda tepadan 20mm joy tashlash buyrug'ini o'chirib tashladik */
+      .page { padding-top: 0 !important; } 
+      .sticker { border: 1px solid #000; }
+      
+      /* Tiniqlik uchun muhim sozlama */
+      /* * { -webkit-print-color-adjust: exact !important; } */
+    }
+</style>
+ 
+</head>
+
+<body>
+  <div class="page">
+    <div class="sticker">
+      <div class="brand">Maxway</div>
+      <div class="name">{{ product.name }}</div>
+
+      <div class="line muted">Хранить при {{ product.temp_range }}</div>
+      <div class="line muted">Срок хранения: {{ product.shelf_life_hours }} час.</div>
+
+      <!-- <div class="line">ОТ: {{ dt_from }}</div>
+      <div class="line">ДО: {{ dt_to }}</div> -->
+      <div class="line">ОТ: {{ created_at }}</div>
+      <div class="line">ДО: {{ expires_at }}</div>
+
+
+      <!-- <div class="line muted" style="margin-top:8px;">Маркировал: {{ username }}</div> -->
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+        window.print();   // avtomatik print oynasi
+        window.onafterprint = function() {
+            window.close();   // printdan keyin oynani yopadi (ixtiyoriy)
+        }
+    }
+  </script>
+
+</body>
+</html>
+
+
+<!-- .badge-brand { background:#7E5FA6; } -->

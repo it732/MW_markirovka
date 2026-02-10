@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Markirovka Tizimi</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .product-card { border: 1px solid #ddd; padding: 15px; margin: 10px; display: inline-block; text-align: center; border-radius: 8px; }
+        .product-card img { width: 150px; height: 100px; object-fit: cover; }
+        .print-btn { background: #ffcc00; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+    
+        .glow-button {
+          background-color: #6c757d; /* kulrang */
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 13px;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: 0.3s; /* yumshoq o'zgarish */
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+ 
+    </style>
+</head>
+<body>
+    <div align="center">
+      <h1>Maxway</h1>
+    </div>
+    
+    <div style="text-align: right; margin: 20px;">
+      <a href="http://127.0.0.1:8000/" class="glow-button" style="text-decoration: none;">
+        Назад
+      </a>
+    </div>
+
+    <div id="products">
+        {% for product in products %}
+        <div class="product-card">
+            <!-- <img src="{{ product.image_path or 'https://via.placeholder.com/150' }}" alt=""> -->
+            <h3>{{ product.name }}</h3>
+            <p>Срок хранения: {{ product.shelf_life_hours }} часов</p>
+            <!-- <button class="print-btn" onclick="printLabel({{ products.id }})">Print 🖨️</button> -->
+            <button class="print-btn" onclick="printLabel('{{ product.id }}', '{{ product.name }}')">
+                    Печать 🖨️
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+
+    
+    <script>
+      function printLabel(id) {
+          window.open(
+              `/api/marking/print/${id}?marker_name=admin`,
+              '_blank',
+              'width=1200,height=1600'
+          );
+      }
+    </script>
+
+</body>
+</html>
