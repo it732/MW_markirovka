@@ -58,16 +58,16 @@ services:
       - redis
       - db
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx_server
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./static:/usr/share/nginx/html/static # Nginx rasmlarni o'zi tarqatishi uchun
-    depends_on:
-      - web
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx_server
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./static:/usr/share/nginx/html/static # Nginx rasmlarni o'zi tarqatishi uchun
+  #   depends_on:
+  #     - web
 
 volumes:
   postgres_data:
