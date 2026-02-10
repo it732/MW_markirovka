@@ -14,7 +14,7 @@ from app.db import base # Modellaringiz yig'ilgan Base klasini import qiling
 
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 
 # Jadvallarni yaratish (bu xatolikni yo'qotadi)
@@ -29,8 +29,14 @@ app = FastAPI(
     redoc_url=None
 )
 
-# Static
-app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
+static_path = BASE_DIR / "static"
+
+if static_path.exists():
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
+
+# app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
+
 
 templates = Jinja2Templates(directory="app/templates")
 app.state.templates = templates
