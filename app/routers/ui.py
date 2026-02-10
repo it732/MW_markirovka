@@ -111,6 +111,42 @@ def admin_page(request: Request, token: str | None = None, db: Session = Depends
     )
 
 # ADMIN: Create category (image REQUIRED)
+# @router.post("/admin/category")
+# def admin_create_category(
+#     token: str = Form(...),
+#     name: str = Form(...),
+#     category_image: UploadFile = File(...),
+#     db: Session = Depends(get_db),
+# ):
+#     if token != "ok":
+#         return RedirectResponse(url="/admin-login", status_code=HTTP_303_SEE_OTHER)
+
+#     name = name.strip()
+#     if not name:
+#         return RedirectResponse(url="/admin?token=ok&err=category_empty", status_code=HTTP_303_SEE_OTHER)
+
+#     exists = db.query(Category).filter(Category.name == name).first()
+#     if exists:
+#         return RedirectResponse(url="/admin?token=ok&err=category_exists", status_code=HTTP_303_SEE_OTHER)
+
+#     os.makedirs("static/category", exist_ok=True)
+#     ext = os.path.splitext(category_image.filename or "")[1].lower() or ".jpg"
+#     filename = f"{uuid.uuid4().hex}{ext}"
+#     save_path = os.path.join("static", "category", filename)
+
+#     with open(save_path, "wb") as f:
+#         f.write(category_image.file.read())
+
+#     cat = Category(name=name, image_path="/" + save_path.replace("\\", "/"))
+#     db.add(cat)
+#     db.commit()
+
+#     return RedirectResponse(url="/admin?token=ok&ok=category_created", status_code=HTTP_303_SEE_OTHER)
+
+
+
+import shutil # Qo'shildi
+
 @router.post("/admin/category")
 def admin_create_category(
     token: str = Form(...),
@@ -125,19 +161,26 @@ def admin_create_category(
     if not name:
         return RedirectResponse(url="/admin?token=ok&err=category_empty", status_code=HTTP_303_SEE_OTHER)
 
-    exists = db.query(Category).filter(Category.name == name).first()
-    if exists:
-        return RedirectResponse(url="/admin?token=ok&err=category_exists", status_code=HTTP_303_SEE_OTHER)
+    # Papka mavjudligini tekshirish (Railway Volume uchun)
+    upload_dir = os.path.join("static", "category")
+    os.makedirs(upload_dir, exist_ok=True)
 
-    os.makedirs("static/category", exist_ok=True)
+    # Fayl nomini yaratish
     ext = os.path.splitext(category_image.filename or "")[1].lower() or ".jpg"
     filename = f"{uuid.uuid4().hex}{ext}"
-    save_path = os.path.join("static", "category", filename)
+    save_path = os.path.join(upload_dir, filename)
 
-    with open(save_path, "wb") as f:
-        f.write(category_image.file.read())
+    # Rasmni saqlash (shutil bilan xavfsizroq)
+    try:
+        with open(save_path, "wb") as buffer:
+            shutil.copyfileobj(category_image.file, buffer)
+    finally:
+        category_image.file.close()
 
-    cat = Category(name=name, image_path=save_path.replace("\\", "/"))
+    # BAZA UCHUN YO'L: /static/category/nom.jpg ko'rinishida bo'lishi kerak
+    db_path = "/" + save_path.replace("\\", "/")
+    
+    cat = Category(name=name, image_path=db_path)
     db.add(cat)
     db.commit()
 

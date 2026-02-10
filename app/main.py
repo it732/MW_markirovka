@@ -29,9 +29,13 @@ app = FastAPI(
     redoc_url=None
 )
 
-
 static_path = BASE_DIR / "static"
-static_path.mkdir(parents=True, exist_ok=True) # Papkani majburiy yaratish
+
+# Papkalarni majburiy yaratish (shartlarsiz)
+static_path.mkdir(parents=True, exist_ok=True)
+(static_path / "category").mkdir(parents=True, exist_ok=True)
+
+# Static fayllarni mount qilish
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 # app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
 
