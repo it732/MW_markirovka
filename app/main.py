@@ -42,6 +42,8 @@ os.makedirs(os.path.join(static_path, "category"), exist_ok=True)
 
 # Mount qilish (SHU QATORGA DIQQAT QILING)
 app.mount("/static", StaticFiles(directory=static_path), name="static")
+
+
 templates = Jinja2Templates(directory="app/templates")
 app.state.templates = templates
 

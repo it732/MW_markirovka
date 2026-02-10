@@ -176,10 +176,10 @@ def admin_create_category(
             shutil.copyfileobj(category_image.file, buffer)
     finally:
         category_image.file.close()
+        
+    # BAZA UCHUN YO'L: Aniq qilib yozamiz
+    db_path = f"/static/category/{filename}"
 
-    # BAZA UCHUN YO'L: /static/category/nom.jpg ko'rinishida bo'lishi kerak
-    db_path = "/" + save_path.replace("\\", "/")
-    
     cat = Category(name=name, image_path=db_path)
     db.add(cat)
     db.commit()
