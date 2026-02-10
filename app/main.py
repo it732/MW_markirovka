@@ -31,10 +31,8 @@ app = FastAPI(
 
 
 static_path = BASE_DIR / "static"
-
-if static_path.exists():
-    app.mount("/static", StaticFiles(directory=static_path), name="static")
-
+static_path.mkdir(parents=True, exist_ok=True) # Papkani majburiy yaratish
+app.mount("/static", StaticFiles(directory=static_path), name="static")
 # app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
 
 
