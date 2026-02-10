@@ -29,17 +29,19 @@ app = FastAPI(
     redoc_url=None
 )
 
-# To'liq (absolute) yo'lni ko'rsatamiz
-static_path = os.path.join(os.getcwd(), "static")
 
-# Papkalarni yaratish
+# Loyihaning asosiy papkasini aniqlash
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Static papkaga to'liq yo'l (Absolute path)
+# Agar main.py 'app' papkasi ichida bo'lsa, shunday yozing:
+static_path = os.path.join(BASE_DIR, "static")
+
+# Papkalarni yaratishni tekshirish
 os.makedirs(os.path.join(static_path, "category"), exist_ok=True)
 
-# Mount qilishda qat'iy yo'lni bering
+# Mount qilish (SHU QATORGA DIQQAT QILING)
 app.mount("/static", StaticFiles(directory=static_path), name="static")
-# app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
-
-
 templates = Jinja2Templates(directory="app/templates")
 app.state.templates = templates
 
