@@ -11,7 +11,7 @@ from app.config import settings
 
 from app.db.session import engine, Base
 from app.db import base # Modellaringiz yig'ilgan Base klasini import qiling
-
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -29,13 +29,13 @@ app = FastAPI(
     redoc_url=None
 )
 
-static_path = BASE_DIR / "static"
+# To'liq (absolute) yo'lni ko'rsatamiz
+static_path = os.path.join(os.getcwd(), "static")
 
-# Papkalarni majburiy yaratish (shartlarsiz)
-static_path.mkdir(parents=True, exist_ok=True)
-(static_path / "category").mkdir(parents=True, exist_ok=True)
+# Papkalarni yaratish
+os.makedirs(os.path.join(static_path, "category"), exist_ok=True)
 
-# Static fayllarni mount qilish
+# Mount qilishda qat'iy yo'lni bering
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 # app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
 
