@@ -178,7 +178,7 @@ def admin_create_category(
         category_image.file.close()
 
     # BAZA UCHUN YO'L: Aniq qilib yozamiz
-    db_path = f"/static/category/{filename}"
+    db_path = f"static/category/{filename}"
 
     cat = Category(name=name, image_path=db_path)
     db.add(cat)
