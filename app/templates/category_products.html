@@ -11,33 +11,49 @@
     
         .glow-button {
           background-color: #6c757d; /* kulrang  */
+          padding: 32px 30px; /* Tepadan-pastdan 12px, yonlardan 30px - bu kvadrat shaklini beradi */
+          display: inline-block; /* O'lchamlar to'g'ri ishlashi uchun */
           color: white;
-          padding: 10px 20px;
+          padding: 6px 25px;
           border: none;
           border-radius: 13px;
-          font-size: 15px;
-          font-weight: 600;
+          font-size: 20px;
+          font-weight: 400;
           cursor: pointer;
           transition: 0.3s; /* yumshoq o'zgarish */
           box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .main-container {
+            max-width: 1400px; /* Sahifaning maksimal kengligi */
+            margin: 0 auto;    /* O'rtaga tekislash */
+            padding: 0 20px;   /* Mana shu ikki yon tomondan padding beradi */
         }
  
     </style>
 </head>
 <body>
-    <div align="center">
-      <h1>Maxway</h1>
-    </div>
+  <div class="main-container"> 
     
-    <div style="text-align: right; margin: 20px;">
-      <!-- <a href="http://127.0.0.1:8000/" class="glow-button" style="text-decoration: none;">
-        Назад
-      </a> -->
-      <button>
-        <a href="/" class="btn btn-outline-secondary" class="glow-button" style="text-decoration: none;">Назад</a>
-      </button>
-      <!-- <a href="/" class="btn btn-outline-secondary" class="glow-button" style="text-decoration: none;">Назад</a> -->
+    <h2 style="margin: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%;">      
+        <img src="/static/logo/logo.png" alt="Maxway" style="height: 50px; width: auto; margin-bottom: 10px; display: block;" 
+        onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\'font-weight:bold; font-size:1.5rem;\'>Maxway</span>';">
+
+         {% if category %}
+            <div style="color: #a0a0a0; font-weight: 300; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.5px; width: 100%;">
+            </div>
+        {% endif %}
+        
+        {% if category %}
+            <div style="color: #e2d10ffb; font-weight: 600; font-size: 1.4rem; text-transform: uppercase; width: 100%;">
+                {{ category.name }}
+            </div>
+        {% endif %}
+    </h2>
+    
+    <div style="text-align: right; margin-top: 20px;">
+        <a href="/" class="glow-button" style="text-decoration: none;">Назад</a>
     </div>
+     
 
     <div id="products">
         {% for product in products %}
@@ -63,6 +79,6 @@
           );
       }
     </script>
-
+  </div>
 </body>
 </html>
